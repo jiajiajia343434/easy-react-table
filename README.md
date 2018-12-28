@@ -1,3 +1,6 @@
+# easy-react-table
+easy to using react-table in my project
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
