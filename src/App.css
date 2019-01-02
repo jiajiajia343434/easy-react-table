@@ -1,39 +1,63 @@
-@import "~antd/dist/antd.css";
+
+body {
+    padding: 0;
+    height: 100%;
+}
+html {
+    padding: 0;
+    height: 100%;
+}
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+    animation: App-logo-spin infinite 20s linear;
+    height: 40vmin;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.ReactTable{
-  color: #000000;
-  font-size:12px;
+.ReactTable {
+    color: #000000;
+    font-size: 12px;
+}
+
+/*修复div选中后难看的大蓝框*/
+.ReactTable div:focus{
+    outline:none;
+}
+
+/*单元格虚线边框*/
+.ReactTable .rt-tbody .rt-td {
+    border-right: 1px dotted rgba(0,0,0,0.2);
+    border-bottom: 1px dotted rgba(0,0,0,0.2);
+}
+
+/*表格行的hover颜色*/
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover{
+    background-color: #eaf2ff;
 }

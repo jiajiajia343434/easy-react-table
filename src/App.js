@@ -2,13 +2,16 @@ import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import queryString from 'query-string';
 import Scrollbar from "react-perfect-scrollbar";
-import { Pagination } from 'rsuite';
+import Pagination from 'rc-pagination';
+import Select from 'rc-select';
 import classNames from "classnames";
 
-import './App.css';
 import 'react-table/react-table.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import 'rsuite/styles/pagination.less'
+import 'rc-pagination/dist/rc-pagination.css'
+import 'rc-select/assets/index.css'
+import './App.css';
+
 
 const __params__ = {
     bondCode: "",
@@ -22,7 +25,8 @@ const __params__ = {
 
 const __pageSize__ = {
     page: 1,
-    rows: 100
+    rows: 100,
+    Pagination: ['10', '20', '50', '100']
 };
 
 const FormatTermId = (data) => data + "年期";
@@ -31,51 +35,90 @@ const __columns__ = [
     {
         Header: "债券名称",
         accessor: "BONDNAME",
-        minWidth: 100,
+        minWidth: 160,
         style: {
-            color: "red"
+            textAlign: "center",
+            whiteSpace: "pre-wrap"
         }
     }, {
         Header: "债券代码",
         accessor: "BONDCODE",
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "债券类型",
         accessor: "TYPENAME",
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "发行方式",
         accessor: "ISSUETYPE",
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "发行日期",
         accessor: "ISSUEDATE",
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "发行批次",
         accessor: "BATCHMODE",
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "发行期限",
         id: "BONDTERMID",
         accessor: (d) => FormatTermId(d.BONDTERMID),
         minWidth: 100,
+        style: {
+            textAlign: "center"
+        }
     }, {
         Header: "债券金额(万元)",
         accessor: "BONDLIMIT",
         minWidth: 100,
+        style: {
+            textAlign: "right"
+        },
+        Footer: (a) => {
+            console.log(a);
+            return (
+                <span>
+                    <strong>小计:</strong>
+                </span>
+            )
+        }
     }, {
         Header: "新增额度(万元)",
         accessor: "NEWS",
         minWidth: 100,
+        style: {
+            textAlign: "right"
+        }
     }, {
         Header: "置换额度(万元)",
         accessor: "REPLACEMENT",
         minWidth: 100,
+        style: {
+            textAlign: "right"
+        }
     }, {
         Header: "借新还旧(万元)",
         accessor: "REFUNDING",
         minWidth: 100,
+        style: {
+            textAlign: "right"
+        }
     }];
 
 class App extends Component {
@@ -94,7 +137,7 @@ class App extends Component {
         this.setState({loading: true});
 
         Object.assign(__pageSize__, params);
-        fetch("http://192.168.8.26:8080/BondManagerSys/bondInfoAction/bondInfoList.do", {
+        fetch("http://127.0.0.1:8080/bondInfoAction/bondInfoList.do", {
             mode: "cors",
             method: "POST",
             headers: {
@@ -105,13 +148,16 @@ class App extends Component {
             res.json()
         ).then(data => {
             this.setState({
-                data: data.rows,
-                loading: false,
-                pages: data.totalPageCount,
-                page: (data.currentPageNo - 1),
-                pageSize: data.pageSize
-            },
-                this._scrollBarRef.updateScroll());
+                    data: data.rows,
+                    loading: false,
+                    pages: data.totalPageCount,
+                    page: (data.currentPageNo - 1),
+                    pageSize: data.pageSize,
+                    total: data.total
+                },
+                () => {
+                    this._scrollBarRef.updateScroll();
+                });
         });
     };
 
@@ -120,11 +166,11 @@ class App extends Component {
     };
 
     onPageChange = (currentPage) => {
-        const pageInfo = {page: currentPage + 1};
+        const pageInfo = {page: currentPage};
         this.update(pageInfo)
     };
-    onPageSizeChange = (currentPageSize, currentPage) => {
-        const pageInfo = {page: currentPage + 1, rows: currentPageSize};
+    onPageSizeChange = (currentPage, currentPageSize) => {
+        const pageInfo = {page: currentPage, rows: currentPageSize};
         this.update(pageInfo);
     };
 
@@ -134,39 +180,47 @@ class App extends Component {
             <ReactTable {...this.state}
                         className="-striped -highlight"
                         style={{
-                            height: document.body.clientHeight // This will force the table body to overflow and scroll, since there is not enough room
+                            height: document.body.clientHeight - 2
                         }}
                         onPageChange={this.onPageChange}
                         onPageSizeChange={this.onPageSizeChange}
                         manual
                         noDataText={"无数据"}
                         loadingText={"正在加载..."}
-                        previousText={"上一页"}
-                        nextText={"下一页"}
-                        pageText={"第"}
-                        ofText={""}
                         TbodyComponent={
                             props => (
                                 <div {...props} className={classNames("rt-tbody", props.className || [])}>
-                                <Scrollbar ref = { ref => this._scrollBarRef = ref } >{props.children}</Scrollbar>
+                                    <Scrollbar ref={ref => this._scrollBarRef = ref}>{props.children}</Scrollbar>
                                 </div>
                             )
                         }
                         PaginationComponent={
                             props => {
                                 return <Pagination
-                                    prev
-                                    last
-                                    next
-                                    first
-                                    size="xs"
-                                    pages={10}
-                                    activePage={this.state.activePage}
-                                    onSelect={this.handleSelect}
+                                    selectComponentClass={Select}
+                                    pageSizeOptions={__pageSize__.Pagination}
+                                    showSizeChanger={true}
+                                    showQuickJumper={{goButton: <button>确定</button>}}
+                                    defaultPageSize={props.pageSize}
+                                    defaultCurrent={props.page + 1}
+                                    onShowSizeChange={this.onPageSizeChange}
+                                    onChange={this.onPageChange}
+                                    total={this.state.total}
+                                    showTotal={(total, info) => ` 显示${info[0]}-${info[1]},共${total}条 `}
                                 />
                             }
                         }
-
+                        TfootComponent={
+                            props => {
+                                console.log(props.children);
+                                return <div>
+                                    <div className={"rt-tfoot"} style={props.style}>
+                                        {props.children}
+                                        {props.children}
+                                    </div>
+                                </div>
+                            }
+                        }
             >
             </ReactTable>
         );
