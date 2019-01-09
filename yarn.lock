@@ -8400,6 +8400,15 @@ rc-notification@~3.3.0:
     rc-animate "2.x"
     rc-util "^4.0.4"
 
+rc-pagination@^1.17.8:
+  version "1.17.8"
+  resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-1.17.8.tgz#65583bebe13fffe4de7f418e1a6c86374ceabceb"
+  integrity sha512-duEV+K/b/nZNGr943+TMCEcY4xWkjAkpKW0Vr7fSR8wQk0DY7aTJC+k+vjl4X2EzEmPXqy85hibzpsO9vydKAw==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.5.7"
+    react-lifecycles-compat "^3.0.4"
+
 rc-pagination@~1.17.5:
   version "1.17.7"
   resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-1.17.7.tgz#0f12197b48cbcf5eb0f3f526375665f42097f024"
@@ -8428,7 +8437,7 @@ rc-rate@~2.4.2:
     rc-util "^4.3.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-select@^8.6.7:
+rc-select@^8.6.7, rc-select@^8.6.9:
   version "8.6.9"
   resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-8.6.9.tgz#e10f208b1090626df837a6de91d59d84b00bf951"
   integrity sha512-W06QQaKYr7qZuq5eHotOIrQIC3x1z64f3FLeOXq8ZMH9VkrLimaLibSBQ+Zne1wOQ7ZsFpqfvcdmzEOexM85DA==
@@ -9200,10 +9209,10 @@ rsuite-notification@~3.0.2:
   dependencies:
     classnames "^2.2.5"
 
-rsuite-table@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/rsuite-table/-/rsuite-table-3.2.0.tgz#2690964a5e0bb9d363ad72666c05faa60ef70995"
-  integrity sha512-UQjzjMdJ3www8QBKUMECsbYr/BO1kO5JSV0MZn9CfSDgfAzUKNrMAX35iuAdB1cLs2/A+KGfKoK9ptJL1fr2gQ==
+rsuite-table@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/rsuite-table/-/rsuite-table-3.3.1.tgz#103ea567bd9e0906a0301106b721835e043a1909"
+  integrity sha512-gtv0kKBs3hCz3xK2GJ50Z0dO/wg5cBxJTa+zC54SaQOd5psyBNkHCRoCUufiSpnB5DwLBhFUPwRkYu+VbgfVwg==
   dependencies:
     classnames "^2.2.5"
     dom-lib "^1.1.0"
@@ -9221,10 +9230,10 @@ rsuite-utils@^1.6.0:
     lodash "^4.17.5"
     react-lifecycles-compat "^3.0.4"
 
-rsuite@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-3.5.1.tgz#6a94c4917b46c0c07b1ccdc76f247e28a9e48426"
-  integrity sha512-aqMqUFdrf/3vtipCzlfr1EvmZteVNgo2k8zJempCEaRhiHnuZE+bdsrlXW7wgJmQf0FlEQj8Wr2TbTt9N0tzxA==
+rsuite@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-3.5.2.tgz#861cd4d3080511e427eb95e2c35add25d1281e8c"
+  integrity sha512-94j2vqz+5kgSh8kggT3+VKz1gI2zlDB548v5lh+Z04xZNtPdg4ah/ejMTN3d9QB1qhGxK23/4svEgQE01wyuOw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     classnames ">=2.0.0"
@@ -9239,7 +9248,7 @@ rsuite@^3.5.1:
     recompose "^0.26.0"
     rsuite-intl "~1.0.4"
     rsuite-notification "~3.0.2"
-    rsuite-table "^3.2.0"
+    rsuite-table "^3.3.1"
     rsuite-utils "^1.6.0"
     schema-typed "~0.2.1"
 

@@ -6,12 +6,14 @@
     "antd": "^3.11.6",
     "classnames": "^2.2.6",
     "query-string": "^6.2.0",
+    "rc-pagination": "^",
+    "rc-select": "^8.6.9",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-perfect-scrollbar": "^1.4.2",
     "react-scripts": "2.1.1",
     "react-table": "^6.8.6",
-    "rsuite": "^3.5.1"
+    "rsuite": "^3.5.2"
   },
   "scripts": {
     "start": "react-scripts start",

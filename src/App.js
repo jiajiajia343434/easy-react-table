@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
+import {ReactTableDefaults} from 'react-table'
 import queryString from 'query-string';
 import Scrollbar from "react-perfect-scrollbar";
 import Pagination from 'rc-pagination';
@@ -12,6 +13,8 @@ import 'rc-pagination/dist/rc-pagination.css'
 import 'rc-select/assets/index.css'
 import './App.css';
 
+const Tr = ReactTableDefaults.TrComponent;
+const Td = ReactTableDefaults.TdComponent;
 
 const __params__ = {
     bondCode: "",
@@ -35,7 +38,7 @@ const __columns__ = [
     {
         Header: "债券名称",
         accessor: "BONDNAME",
-        minWidth: 160,
+        minWidth: 560,
         style: {
             textAlign: "center",
             whiteSpace: "pre-wrap"
@@ -82,21 +85,15 @@ const __columns__ = [
         minWidth: 100,
         style: {
             textAlign: "center"
-        }
-    }, {
+        },
+        Footer: (() => "")
+    }
+    , {
         Header: "债券金额(万元)",
         accessor: "BONDLIMIT",
         minWidth: 100,
         style: {
             textAlign: "right"
-        },
-        Footer: (a) => {
-            console.log(a);
-            return (
-                <span>
-                    <strong>小计:</strong>
-                </span>
-            )
         }
     }, {
         Header: "新增额度(万元)",
@@ -148,16 +145,14 @@ class App extends Component {
             res.json()
         ).then(data => {
             this.setState({
-                    data: data.rows,
-                    loading: false,
-                    pages: data.totalPageCount,
-                    page: (data.currentPageNo - 1),
-                    pageSize: data.pageSize,
-                    total: data.total
-                },
-                () => {
-                    this._scrollBarRef.updateScroll();
-                });
+                data: data.rows,
+                loading: false,
+                pages: data.totalPageCount,
+                page: (data.currentPageNo - 1),
+                pageSize: data.pageSize,
+                total: data.total,
+                footer: data.footer
+            });
         });
     };
 
@@ -190,7 +185,7 @@ class App extends Component {
                         TbodyComponent={
                             props => (
                                 <div {...props} className={classNames("rt-tbody", props.className || [])}>
-                                    <Scrollbar ref={ref => this._scrollBarRef = ref}>{props.children}</Scrollbar>
+                                    <Scrollbar>{props.children}</Scrollbar>
                                 </div>
                             )
                         }
@@ -206,19 +201,32 @@ class App extends Component {
                                     onShowSizeChange={this.onPageSizeChange}
                                     onChange={this.onPageChange}
                                     total={this.state.total}
-                                    showTotal={(total, info) => ` 显示${info[0]}-${info[1]},共${total}条 `}
+                                    showTotal={(total, info) => `显示${info[0]}-${info[1]},共${total}条`}
                                 />
                             }
                         }
                         TfootComponent={
                             props => {
-                                console.log(props.children);
-                                return <div>
+                                let _original = props.children;
+                                let generateFooter = (index) =>
+                                    <Tr className={_original.props.className} style={_original.props.style}>
+                                        {_original.props.children.map((td, idx) => {
+                                            let content = "";
+                                            if (this.state.footer && this.state.footer[index][td.key.replace(idx + "-", "")]) {
+                                                content = this.state.footer[index][td.key.replace(idx + "-", "")];
+                                            }
+                                            return <Td key={td.key} className={td.props.className}
+                                                       style={td.props.style}>
+                                                {content}
+                                            </Td>
+                                        })}
+                                    </Tr>;
+                                return (
                                     <div className={"rt-tfoot"} style={props.style}>
-                                        {props.children}
-                                        {props.children}
+                                        {generateFooter(0)}
+                                        {generateFooter(1)}
                                     </div>
-                                </div>
+                                )
                             }
                         }
             >
